@@ -1,0 +1,593 @@
+﻿/* ------ Подключение шрифтов ------ */
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/roboto-900.eot');
+    src: url('../fonts/roboto-900.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/roboto-900.woff2') format('woff2'),
+        url('../fonts/roboto-900.woff') format('woff'),
+        url('../fonts/roboto-900.ttf') format('truetype'),
+        url('../fonts/roboto-900.svg#roboto-900') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/roboto-700.eot');
+    src: url('../fonts/roboto-700.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/roboto-700.woff2') format('woff2'),
+        url('../fonts/roboto-700.woff') format('woff'),
+        url('../fonts/roboto-700.ttf') format('truetype'),
+        url('../fonts/roboto-700.svg#roboto-700') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+/* ------ Спецификация ------ */
+
+body {
+	font-family: 'Exo 2.0', sans-serif;
+	color: #081d42;
+	padding: 0;
+	letter-spacing: 0.02em;
+	margin: 0;
+	font-size: 14px;
+}
+
+.container-fluid_plain {
+	padding: 0;
+}
+
+.container {
+	width: 970px;
+	margin: 0 auto;
+}
+
+div, p, form, input, a, span, button {
+	box-sizing: border-box;
+}
+
+p {
+	margin: 0;
+    font-size: 14px;
+    line-height: 1.4em;
+    letter-spacing: .02em;
+}
+
+ul, li {
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 700;
+	line-height: 1.6em;
+	letter-spacing: 0;
+}
+
+h1 {
+	
+}
+
+h2 {
+	
+}
+
+h3 {
+	font-size: 18px;
+}
+
+h4 {
+	
+}
+
+h5 {
+	
+}
+
+textarea {
+	resize: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color: #2696E5;
+	padding-left: 6px;
+	border: 1px solid #2696E5;
+	min-height: 100px;
+}
+
+a, a:hover, a:active {
+	text-decoration: none;
+	color: #3f4b60;
+}
+
+a, button, input {
+	transition: all 0.5s ease;
+	outline: none;
+}
+
+input, input:hover, input:focus, input:active,
+button, button:hover, button:focus, button:active 
+{
+	outline: none;
+}
+
+.red-font {
+	color: #b81c31;
+}
+
+.ttu {
+	text-transform: uppercase;
+}
+
+.toback {
+	display: inline-block;
+	position: relative;
+	padding-left: 30px;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+	color: #007bff;
+}
+
+.toback:before {
+	display: block;
+	position: absolute;
+	content: '➠';
+	transform: rotate(180deg);
+	text-align: center;
+	top: 2px;
+	left: 0px;
+	line-height: 20px;
+	font-size: 25px;
+	color: #007bff;
+}
+
+
+/* ------ HOST SECTION ------ */
+
+.header {
+	padding: 20px 0;
+}
+
+.menu__link {
+	letter-spacing: .17em;
+	border-bottom: 1px dashed transparent;
+	padding-bottom: 3px;
+	cursor: pointer;
+}
+
+.menu__link:hover, .menu__link:focus {
+	border-bottom: 1px dashed #3f4b60;
+	padding-bottom: 3px;
+}
+
+.user-logo {
+	max-width: 60px;
+	max-height: 60px;
+	width: 100%;
+}
+
+.user-account {
+	display: flex;
+	flex-direction: column;
+	margin-left: 25px;
+}
+
+.user-name {
+	font-size: 14px;
+}
+
+.user-level {
+	font-size: 13px;
+}
+
+.menu__item:not(:last-child) {
+	margin-right: 30px;
+}
+
+.exit {
+	display: block;
+	width: 9px;
+	height: 9px;
+	background-color: #3f4b60;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	cursor: pointer;
+	margin-left: 40px;
+	margin-right: 15px;
+}
+
+.chat {
+	background-color: #f8f9fa;
+	width: 100%;
+	min-height: 700px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.list-messages {
+	background-color: #f8f9fa;
+	width: 100%;
+	max-height: 700px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	padding: 6px;
+	margin-bottom: 36px;
+}
+
+.bord {
+	border: 1px solid red;
+}
+
+.wr-label {
+	margin: 10px;
+	font-weight: 600;
+	border-bottom: 2px solid #4e555b;
+}
+
+.wr-label div {
+	padding: 6px;
+}
+
+.label-text p, .label-depart p, .label-status p, .label-date p {
+	font-size: 16px;
+	text-align: left;
+}
+
+.label-text {
+	width: 40%;
+}
+
+.label-depart {
+	width: 20%;
+}
+
+.label-status {
+	width: 20%;
+}
+
+.label-date {
+	width: 15%;
+}
+
+
+
+
+.wr-messages {
+	margin: 10px;
+	cursor: pointer;
+}
+
+.wr-messages:not(:last-child) {
+	border-bottom: 1px solid #c6c8ca;
+}
+
+.wr-messages div {
+	padding: 6px;
+}
+
+.message-text {
+	width: 40%;
+}
+
+.message-depart {
+	width: 20%;
+}
+
+.message-status {
+	width: 20%;
+}
+
+.message-date {
+	width: 15%;
+}
+
+.btn_new-message {
+	background-color: #2261E8;
+	color: #fff!important;
+	border-radius: 50px!important;
+	padding: 12px 27px;
+	margin-top: 12px;
+	border-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.list-tickets {
+	background-color: #f8f9fa;
+	width: 100%;
+	max-height: 700px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	padding: 6px;
+	margin-bottom: 36px;
+}
+
+.bord {
+	border: 1px solid red;
+}
+
+.wr-label {
+	margin: 10px;
+	font-weight: 600;
+	border-bottom: 2px solid #4e555b;
+}
+
+.wr-label div {
+	padding: 6px;
+}
+
+.label-name p, .label-text p, .label-depart p, .label-place p, .label-priority p {
+	font-size: 16px;
+	text-align: left;
+}
+
+.label-name_ticket, .label-text_ticket, .label-depart_ticket, .label-place_ticket, .label-priority_ticket {
+	/*border: 1px solid red;*/
+}
+
+.label-name_ticket {
+	width: 15%;
+}
+
+.label-text_ticket {
+	width: 30%;
+}
+
+.label-depart_ticket {
+	width: 20%;
+}
+
+.label-place_ticket {
+	width: 20%;
+}
+
+.label-priority_ticket {
+	width: 15%;
+}
+
+
+
+
+.wr-tickets {
+	margin: 10px;
+	cursor: pointer;
+}
+
+.wr-tickets:not(:last-child) {
+	border-bottom: 1px solid #c6c8ca;
+}
+
+.wr-tickets div {
+	padding: 6px;
+}
+
+.ticket-name, .ticket-text, .ticket-depart, .ticket-place, .ticket-priority {
+	/*border: 1px solid blue;*/
+}
+
+.ticket-name {
+	width: 15%;
+}
+
+.ticket-text {
+	width: 30%;
+}
+
+.ticket-depart {
+	width: 20%;
+}
+
+.ticket-place {
+	width: 20%;
+}
+
+.ticket-priority {
+	width: 15%;
+}
+
+
+
+
+
+
+
+
+
+/* ------ FORM CREATE TICKET ------ */
+
+.log {
+	background-color: #f8f9fa;
+	width: 600px;
+	padding: 40px;
+	border-radius: 3px;
+	color: #2261E8;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.log__group {
+	display: flex;
+	flex-direction: column;
+}
+
+.log__inner-wrap {
+	display: flex;
+	justify-content: space-between;
+}
+
+.log__wrap {
+	display: flex;
+	flex-direction: column;
+}
+
+.log__wrap div {
+	margin: 6px 0;
+
+}
+
+.log__inner-wrap div:first-child {
+	width: 150px;
+}
+
+.log__inner-wrap div:nth-child(2) {
+	width: 200px;
+}
+
+.log__inner-wrap div:nth-child(3) {
+	width: 100px;
+}
+
+
+
+
+.log input {
+	border: 1px solid #2696E5;
+	border-radius: 3px;
+	color: #2696E5;
+}
+
+select {
+	color: #2261E8;
+	border-color: #2261E8;
+}
+
+.btn_send, .btn-enter {
+	 background-color: #2261E8;
+	 color: #fff!important;
+	 border-radius: 50px!important;
+	 padding: 12px 27px;
+	 margin-top: 12px;
+ }
+
+.btn_del {
+	background-color: #FE161D;
+	color: #fff!important;
+	border-radius: 50px!important;
+	padding: 12px 27px;
+	margin-top: 12px;
+}
+
+.btn_agree {
+	background-color: #17AA3E;
+	color: #fff!important;
+	border-radius: 50px!important;
+	padding: 12px 27px;
+	margin-top: 12px;
+}
+
+.btn_reject {
+	background-color: #5F5F5F;
+	color: #fff!important;
+	border-radius: 50px!important;
+	padding: 12px 27px;
+	margin-top: 12px;
+	margin-left: 20px;
+}
+
+.log input[id="del"], .log input[id="agree"], .log input[id="reject"] {
+	border: none;
+}
+
+.log input:not(.btn_send, .btn_del, .btn_agree) {
+	padding-left: 6px;
+}
+
+
+.log__input {
+	font-weight: 400;
+}
+
+
+
+
+
+
+
+
+
+.form-enter-wr {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.enter, .new-worker {
+	display: flex;
+	flex-direction: column;
+	padding: 50px 0;
+	align-items: center;
+	border-radius: 9px;
+	width: 300px;
+	background-color: aliceblue;
+}
+
+.icon-user {
+	width: 130px;
+	display: block;
+	margin-bottom: 50px;
+
+}
+
+.enter input, .new-worker input {
+	border-radius: 50px;
+	border: 1px solid #828282;
+	padding: 6px 15px;
+	margin-bottom: 18px;
+	width: 210px;
+}
+
+input::placeholder {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	color: #707070;
+	letter-spacing: .03em;
+	font-weight: 100;
+}
+
+.btn-enter, .btn-send-query {
+	margin-top: 9px;
+}
+
+
+.forgot-password {
+	display: block;
+	color: #BEBEBE;
+	letter-spacing: .03em;
+	font-weight: 100;
+}
+
+.new-worker {
+	margin-top: 40px;
+	padding: 36px 0;
+}
+
+.new-worker__title {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	color: #707070;
+	margin-bottom: 18px;
+	font-weight: 400;
+}
+
+.btn-send-query {
+	margin-bottom: 0;
+}
