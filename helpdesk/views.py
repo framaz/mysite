@@ -61,6 +61,8 @@ def view_ticket(request,ticket_num):
                 "user": request.user.first_name + " " + request.user.last_name}
     if models.EmployeesInDepartments.objects.filter(person = request.user).count()>0:
             context['isWorker'] = True
+    result_list=models.Ticket.objects.filter(requestor=request.user)
+    context["tickets"] = result_list.filter(finished=False,deleted=False)
     if context["obj"].requestor == request.user:
         return render(request,"helpdesk/view-ticket.html",context)
     else:
@@ -139,17 +141,34 @@ class list_tickets_admin(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         departments_querySet = models.EmployeesInDepartments.objects.filter(person = self.request.user)
         department_list = []
-        print(departments_querySet)
         for department in departments_querySet.all():
             department_list.append(department.department.pk)
-        print(models.Department.objects.get(pk=department_list[0]))
+
         result_list=models.Ticket.objects.filter(targeted_department__pk__in=department_list,finished=False,deleted=False)
         return result_list.order_by('-pub_date')
+@login_required
+def send_ticket_message(request):
+    ticket=models.Ticket.objects.get(pk=request.POST["ticket_num"])
+    message=request.POST["chat-message"].replace("\n"," ")
+    ticket.chat+="\n"+request.user.first_name+" "+request.user.last_name+":"+message
+    ticket.save()
+    if request.POST["user_type"] == "user":
+        return redirect('helpdesk:view_ticket',ticket_num=ticket.pk)
+    else:
+        return redirect('helpdesk:view_ticket_admin',ticket_num=ticket.pk)
+    
 @login_required
 def view_ticket_admin(request,ticket_num):
     context = {"obj": get_object_or_404(models.Ticket,pk=ticket_num,deleted=False,finished=False),
                 "user": request.user.first_name + " " + request.user.last_name}
     get_object_or_404(models.EmployeesInDepartments,person=request.user,department=context["obj"].targeted_department)
+    departments_querySet = models.EmployeesInDepartments.objects.filter(person = request.user)
+    department_list = []
+    for department in departments_querySet.all():
+        department_list.append(department.department.pk)
+    result_list=models.Ticket.objects.filter(targeted_department__pk__in=department_list,finished=False,deleted=False)
+    result_list.order_by('-pub_date')
+    context["tickets"]=result_list
     if models.EmployeesInDepartments.objects.filter(person = request.user).count()>0:
         context['isWorker'] = True
     return render(request,'helpdesk/view-ticket_admin.html',context)

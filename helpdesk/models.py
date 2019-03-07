@@ -16,6 +16,7 @@ class Ticket(models.Model):
     pub_date = models.DateTimeField('date published')
     finished = models.BooleanField(default="False")
     deleted = models.BooleanField(default="False")
+    chat = models.TextField(default="")
 class EmployeesInDepartments(models.Model):
     person = models.ForeignKey('auth.User',on_delete=models.CASCADE, related_name="person")
     department = models.ForeignKey('Department',on_delete=models.CASCADE, related_name="department")
@@ -34,4 +35,4 @@ class Message(models.Model):
 #buh 1w2e3r4t
 #tech 1w2e3r4t
 #buhxtech 1w2e3r4t
-#noone 1w2e3r4t-
+#noone 1w2e3r4t

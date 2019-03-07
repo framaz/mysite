@@ -31,7 +31,6 @@ LOGIN_URL = 'login_view'
 # Application definition
 
 INSTALLED_APPS = [
-    'polls.apps.PollsConfig',
     'ticgame.apps.TicgameConfig',
     'helpdesk.apps.HelpDeskConfig',
     'django.contrib.admin',

@@ -18,4 +18,5 @@ urlpatterns = [
     path('list-tickets-admin.html',views.list_tickets_admin.as_view(), name='list_tickets_admin'),
     path('view-ticket_admin_<int:ticket_num>',views.view_ticket_admin , name='view_ticket_admin'),
     path('accept_ticket_<int:ticket_num>',views.accept_ticket , name='accept_ticket'),
+    path('send_ticket_message',views.send_ticket_message,name='send_ticket_message')
 ]

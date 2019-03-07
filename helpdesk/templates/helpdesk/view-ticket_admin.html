@@ -71,9 +71,33 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg d-flex justify-content-center">
+				<div class="col-lg-4 d-flex justify-content-center">
+					<ul class="list-tickets">
+						<li class="wr-label d-flex justify-content-between">
+							<div class="label-name_ticket label-name_ticket-view">
+								<p># заявки</p>
+							</div>
+							<div class="label-text_ticket label-text_ticket-view">
+								<p>Тема</p>
+							</div>
+						</li>
+						{%for ticket in tickets%}
+							<li class="wr-tickets">
+							<a href="{%url 'helpdesk:view_ticket_admin' ticket.pk%}" class="d-flex justify-content-between">
+									<div class="ticket-name ticket-name_view">
+										<p>{{ticket.pk}}</p>
+									</div>
+									<div class="ticket-text ticket-text_view">
+										<p>{{ticket.theme}}</p>
+									</div>
+								</a>
+							</li>
+						{%endfor%}
+					</ul>
+				</div>
+				<div class="col-lg-8 d-flex justify-content-end">
 					<form action="{%url 'helpdesk:accept_ticket' obj.pk%}" class="log clients__form review-form" id="popupMessage">
-						<h3 class="log__title">Заявка #17</h3>
+						<h3 class="log__title">Заявка </h3>
 						<div class="log__wrap">
 							<div class="log__group">
 								<label>От пользователя:</label>
@@ -113,17 +137,36 @@
 									{{obj.details}}
 								</p>
 							</div>
+							<div class="log__group log__group_textarea">
+								<label>Выполняет:</label>
+								<p class="log__input">
+									{%if obj.worker.first_name == NULL%}Ожидается{%else%}{{obj.worker.first_name}} {{obj.worker.last_name}}{%endif%}
+								</p>
+							</div>
 						</div>
 						<div class="log__btn">
 							{%if obj.worker.first_name == NULL%}<input id="agree" type="submit" data-submit value="Принять" class="btn btn_agree"/>{%endif%}
 							<!--<input id="reject" type="submit" data-submit value="Отклонить" class="btn btn_reject"/>-->
 						</div>
 					</form>
-
-
 				</div>
 			</div>
-			
+			<div class="row">
+				<div class="col-lg">
+					<div class="chat-window">
+						<pre>{{obj.chat}}</pre>
+					</div>
+					<form action="{%url 'helpdesk:send_ticket_message'%}" method="POST" class="form-chat d-flex flex-column">
+						{% csrf_token %}
+						<textarea name="chat-message" placeholder="Сообщение" required></textarea>
+						<input type="hidden" name="ticket_num" value="{{obj.pk}}">
+						<input type="hidden" name="user_type" value="admin">
+						<button type="submit" class="chat-send">
+							Отправить
+						</button>
+					</form>
+				</div>
+			</div>
 		</div>
 	</section>	
 	<footer class="footer" id="footer">
@@ -131,13 +174,6 @@
 			
 		</div>
 	</footer>
-
-
-
-
-
-
-
 	<!-- JS Scripts -->
 <script src="{%static 'js/main.js'%}"></script>
 </body>
