@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.db.models import Q
+from datetime import datetime
 from . import models
 # Create your views here.
 def login_view(request):
@@ -46,11 +47,15 @@ def new_ticket(request):
     return render(request,"helpdesk/new-ticket.html",context)
 @login_required
 def send_ticket(request):
+    exp_date = request.POST['date']
+    translated_date= exp_date[6:10] + "-" + exp_date[0:2] + "-" + exp_date[3:5]
+    if datetime.strptime(translated_date, '%Y-%m-%d')<timezone.now().replace(tzinfo=None):
+        return redirect('helpdesk:new_ticket')
     models.Ticket.objects.create(requestor = request.user,
                             theme = request.POST['theme'],
                             targeted_department = models.Department.objects.get(pk=request.POST['division']),
                             place = request.POST['room'],
-                            priority = request.POST['priority'],
+                            exp_date = translated_date,
                             details = request.POST['message'],
                             pub_date = timezone.now()
                         )
@@ -178,3 +183,7 @@ def accept_ticket(request,ticket_num):
         ticket.worker=request.user
         ticket.save()
     return redirect('helpdesk:list_tickets_admin')
+def logout_view(request):
+    logout(request)
+    return redirect('helpdesk:login_view')
+    

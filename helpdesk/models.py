@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models.functions import ExtractDay, ExtractMonth, ExtractYear
 # Create your models here.
 class Department(models.Model):
     name = models.CharField(max_length=100)
@@ -14,9 +15,12 @@ class Ticket(models.Model):
     priority = models.IntegerField(default="0") # 0-Низкий 1-Средний 2-Высокий
     details = models.CharField(max_length=1000,default="")
     pub_date = models.DateTimeField('date published')
+    exp_date = models.DateTimeField('expiration date')
     finished = models.BooleanField(default="False")
     deleted = models.BooleanField(default="False")
     chat = models.TextField(default="")
+    def nice_exp_date(this):
+        return ExtractDay(this.exp_date)+"/"+ExtractMonth(this.exp_date)+"/"+ExtractYear(this.exp_date)
 class EmployeesInDepartments(models.Model):
     person = models.ForeignKey('auth.User',on_delete=models.CASCADE, related_name="person")
     department = models.ForeignKey('Department',on_delete=models.CASCADE, related_name="department")

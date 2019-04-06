@@ -1,5 +1,68 @@
-{%extends 'helpdesk/father_frame.html'%}
-{%block contents%}
+<!DOCTYPE html>
+{%load static%}
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Help Desk | Просмотр заявки</title>
+	<meta name="description" content="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolorempor incididunt set">
+	<meta name="keywords" content="lorem, ipsum, dolor, sit, amet, consectetur, adipisicing, elit">
+	<!-- Favicon -->
+	<!--<link rel="icon" href="//wayup.in/assets/templates/wp/images/logo-footer.png" type="image/x-icon">-->
+ 	<!--<link rel="shortcut icon" href="//wayup.in/assets/templates/wp/images/logo-footer.png" type="image/x-icon">-->
+	<!-- CSS Styles -->
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+	<link rel="stylesheet" href="{%static 'css/main.css'%}">
+</head>
+<body>
+	<header class="header" id="header">
+		<div class="container">
+			<div class="row d-flex align-items-center justify-content-between">
+				<div class="col-lg-2">
+					<div class="logo ttu">
+						Help Desk v 1.0
+					</div>
+				</div>
+				<div class="col-lg-4 d-flex justify-content-end">
+					<nav>
+						<ul class="menu ttu d-flex">
+							{%if isWorker%}
+							<li class="menu__item">
+								<a href="list-tickets-admin.html" class="menu__link">
+									Рассмотреть заявки
+								</a>
+							</li>
+							{%endif%}
+							<li class="menu__item">
+								<a href="list-tickets.html" class="menu__link">
+									Заявки
+								</a>
+							</li>
+							<li class="menu__item">
+								<a href="list-messages.html" class="menu__link">
+									Сообщения
+								</a>
+							</li>
+							<li class="menu__item">
+								<a href="faq.html" class="menu__link">
+									F.A.Q.
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<div class="col-lg d-flex align-items-center justify-content-end">
+					<img src="{%static 'img/icon-user.png'%}" class="user-logo">
+					<div class="user-account">
+						<p class="user-name">
+							{{user}}
+						</p>
+					</div>
+					<div class="exit" title="Выйти"></div>
+				</div>
+			</div>
+		</div>
+	</header>
 	<section class="section-two-class" id="section-two-id">
 		<div class="container">
 			<div class="row">
@@ -62,10 +125,9 @@
 									</p>
 								</div>
 								<div class="log__group log__group_socials">
-									<label>До:</label>
+									<label>Приоритет:</label>
 									<p class="log__input">
-										{%if obj.priority == 0%}{%endif%}{%if obj.priority == 2%}{%endif%}{%if obj.priority == 1%}{%endif%}
-										{{obj.exp_date.day}}/{{obj.exp_date.month}}/{{obj.exp_date.year}}
+										{%if obj.priority == 0%}Низкий{%endif%}{%if obj.priority == 2%}Высокий{%endif%}{%if obj.priority == 1%}Средний{%endif%}
 									</p>
 								</div>
 							</div>
@@ -107,4 +169,12 @@
 			</div>
 		</div>
 	</section>	
-{%endblock%}
+	<footer class="footer" id="footer">
+		<div class="container">
+			
+		</div>
+	</footer>
+	<!-- JS Scripts -->
+<script src="{%static 'js/main.js'%}"></script>
+</body>
+</html>
