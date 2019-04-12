@@ -25,7 +25,7 @@ SECRET_KEY = '^1ru#92c&+)a_ii)hqcox@fl8xu53gyuu++=5o)&!ny*vazs4-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["framaz.pythonanywhere.com"]
 LOGIN_URL = 'login_view'
 
 # Application definition
@@ -119,4 +119,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/home/framaz/mysite/static/'
