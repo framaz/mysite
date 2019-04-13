@@ -11,6 +11,14 @@
 
 /* 768 - 992 px */
 @media screen and (max-width: 992px) {
+    .menu {
+        margin: 15px auto;
+    }
+
+    .log {
+        width: 100%;
+        margin: 20px auto;
+    }
 
 }
 
@@ -25,6 +33,75 @@
 }
 
 @media screen and (max-width: 460px) {	
+    .container {
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .logo {
+        text-align: center;        
+    }
+
+    .menu {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 15px;
+    }
+
+    .menu__item:not(:last-child) {
+        margin-right: 0;
+    }
+
+    .row div {
+        padding: 0;
+    }
+
+    .toback {
+        margin-left: 15px;
+        margin-top: 20px;
+    }
+
+    .label-text, .message-text, .label-text_ticket, .ticket-text, .ticket-name, .label-name_ticket {
+        width: 60%;
+    }
+
+    .label-status, .message-status, .label-priority_ticket, .ticket-priority {
+        width: 40%;
+    }
+
+    .btn_new-message {
+        display: block;
+        width: 210px;
+        margin: 30px auto 0px;
+    }
+
+    .log {
+        width: 100%;
+        margin: 20px auto 0;
+    }
+
+    .log__inner-wrap {
+        flex-direction: column;
+    }
+
+    .log__btn {
+        text-align: center;
+    }
+
+    .btn_reject {
+        margin-left: 0;
+    }
+
+    #accordion {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .card-header, .card-body {
+        padding: 6px!important;
+    }
+
 
 }
 

@@ -11,21 +11,21 @@
 				<div class="col-lg d-flex justify-content-center">
 					<ul class="list-tickets">
 						<li class="wr-label d-flex justify-content-between">
-							<div class="label-name_ticket">
+							<div class="label-name_ticket d-none d-md-block">
 								<p>Имя Специалиста</p>
 							</div>
 							<div class="label-text_ticket">
 								<p>Тема</p>
 							</div>
 							{%if isAdmining%}
-								<div class="label-text_ticket">
+								<div class="label-text_ticket d-none d-md-block">
 									<p>Заявитель</p>
 								</div>
 							{%endif%}
-							<div class="label-depart_ticket">
+							<div class="label-depart_ticket d-none d-md-block">
 								<p>Отдел</p>
 							</div>
-							<div class="label-place_ticket">
+							<div class="label-place_ticket d-none d-md-block">
 								<p>Место</p>
 							</div>
 							<div class="label-priority_ticket">
@@ -35,21 +35,21 @@
 						{% for object in object_list %}
 						<li class="wr-tickets">
 							<a href="view-ticket_{%if isAdmining%}admin_{%endif%}{{object.pk}}" class="d-flex">
-								<div class="ticket-name">
+								<div class="ticket-name d-none d-md-block">
 									<p>{%if object.first_name == ''%}Ожидается{%else%}{{object.worker.first_name}} {{object.worker.last_name}}{%endif%}</p>
 								</div>
 								<div class="ticket-text">
 									<p>{{object.theme}}</p>
 								</div>
 								{%if isAdmining%}
-									<div class="ticket-name">
+									<div class="ticket-name d-none d-md-block">
 										<p>{{object.requestor.first_name}} {{object.requestor.last_name}}</p>
 									</div>
 								{%endif%}
-								<div class="ticket-depart">
+								<div class="ticket-depart d-none d-md-block">
 									<p>{{object.targeted_department.name}}</p>
 								</div>
-								<div class="ticket-place">
+								<div class="ticket-place d-none d-md-block">
 									<p>{{object.place}}</p>
 								</div>
 								<div class="ticket-priority">

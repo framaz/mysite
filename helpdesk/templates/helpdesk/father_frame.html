@@ -3,19 +3,19 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
-	<title>Help Desk v 1.0 | FAQ</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Help Desk v 1.0 | Новое сообщения</title>
 	<meta name="description" content="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolorempor incididunt set">
 	<meta name="keywords" content="lorem, ipsum, dolor, sit, amet, consectetur, adipisicing, elit">
-	<!-- Favicon -->
-	<!--<link rel="icon" href="">-->
- 	<!--<link rel="shortcut icon" href="">-->
-	<!-- JavaScript Scripts -->
+	<!-- jQuery & Bootstrap JS -->
 	<script src="{%static 'js/jquery-3.3.1.min.js'%}"></script>
-	<script src="{%static 'js/jqueri-ui.js'%}"></script>
-	
+	<script src="{%static 'js/bootstrap.min.js'%}"></script>
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+	<link rel="stylesheet" href="{%static 'css/bootstrap-reboot.min.css'%}">
+	<link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">	
+	<!-- CSS Styles -->
 	<link rel="stylesheet" href="{%static 'css/main.css'%}">
+	<link rel="stylesheet" href="{%static 'css/media-queries.css'%}">
 	<script>
 	$( function() {
 			$( "#datepicker" ).datepicker();
@@ -29,11 +29,11 @@
 		<div class="container">
 			<div class="row d-flex align-items-center justify-content-between">
 				<div class="col-lg-2">
-					<div class="logo ttu">
+					<div class="logo ttu text-center text-lg-left">
 						Help Desk v 1.0
 					</div>
 				</div>
-				<div class="col-lg-4 d-flex justify-content-end">
+				<div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">
 					<nav>
 						<ul class="menu ttu d-flex">
 							{%if isWorker%}
@@ -56,14 +56,14 @@
 						</ul>
 					</nav>
 				</div>
-				<div class="col-lg d-flex align-items-center justify-content-end">
+				<div class="col-lg d-flex align-items-center justify-content-center justify-content-lg-end">
 					<img src="{%static 'img/icon-user.png'%}" class="user-logo">
 					<div class="user-account">
 						<p class="user-name">
 							{{user}}
 						</p>
 					</div>
-					<a href="{%url 'helpdesk:logout'%}"><div class="exit"></div>
+					<a href="{%url 'helpdesk:logout'%}"><div class="exit"></div></a>
 				</div>
 			</div>
 		</div>

@@ -43,7 +43,7 @@ body {
 .container {
 	width: 970px;
 	margin: 0 auto;
-	padding: 12px 0;
+	padding: 20px 0 0 0;
 }
 
 div, p, form, input, a, span, button {
@@ -208,6 +208,10 @@ button, button:hover, button:focus, button:active
 	border-radius: 6px;
 }
 
+.chat-window {
+	background: #f8f9fa url(../img/bg-chat.jpg) repeat top center / contain;
+}
+
 .list-messages {
 	background-color: #f8f9fa;
 	width: 100%;
@@ -216,7 +220,6 @@ button, button:hover, button:focus, button:active
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 	padding: 6px;
-	margin-bottom: 36px;
 }
 
 .bord {
@@ -295,19 +298,6 @@ button, button:hover, button:focus, button:active
 	border-style: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .list-tickets {
 	background-color: #f8f9fa;
 	width: 100%;
@@ -316,7 +306,6 @@ button, button:hover, button:focus, button:active
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 	padding: 6px;
-	margin-bottom: 36px;
 }
 
 .bord {
@@ -333,7 +322,7 @@ button, button:hover, button:focus, button:active
 	padding: 6px;
 }
 
-.label-name p, .label-text p, .label-depart p, .label-place p, .label-priority p {
+.label-name p, .label-text p, .label-depart p, .label-place p, .label-priority p, .label-name_ticket p, .label-text_ticket p, .label-depart_ticket p, .label-place_ticket p, .label-priority_ticket p {
 	font-size: 16px;
 	text-align: left;
 }
@@ -1951,4 +1940,27 @@ a.ui-button:active,
 .ui-widget-shadow {
 	-webkit-box-shadow: 0px 0px 5px #666666;
 	box-shadow: 0px 0px 5px #666666;
+}
+
+
+
+
+.logo {
+	font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+.row {
+	margin: 0 auto;
+}
+
+.header {
+	padding: 0;
 }
