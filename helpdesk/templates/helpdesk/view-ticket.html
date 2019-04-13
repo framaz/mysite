@@ -35,7 +35,7 @@
 				<div class="col-lg-8 d-flex justify-content-end">
 					<form  method="POST" action="{%url 'helpdesk:finish_ticket' obj.pk%}" class="log clients__form review-form" id="popupMessage">
 						{% csrf_token %}
-						<h3 class="log__title">Заявка #17</h3>
+						<h3 class="log__title">Заявка</h3>
 						<div class="log__wrap">
 							<div class="log__group">
 								<label>Приступил к выполнению:</label>
@@ -88,7 +88,10 @@
 			<div class="row">
 				<div class="col-lg">
 					<div class="chat-window">
-						<pre>{{obj.chat}}</pre>
+						{%for chat_message,who_sent in chat%}
+						<div class="user_{%if who_sent == 0%}self{%endif%}{%if who_sent == 1%}different{%endif%}">{{chat_message}}</div>
+						<br>
+						{%endfor%}
 					</div>
 					<form action="{%url 'helpdesk:send_ticket_message'%}" method="POST" class="form-chat d-flex flex-column">
 						{% csrf_token %}
