@@ -1,6 +1,12 @@
-
 {%extends 'helpdesk/father_frame.html'%}
 {%block contents%}
+{%load static%}
+	<script src="{%static 'js/jqueri-ui.js'%}"></script>
+	<script>
+	$( function() {
+			$( "#datepicker" ).datepicker();
+		} );
+</script>
 	<section class="section-two-class" id="section-two-id">
 		<div class="container">
 			<div class="row">

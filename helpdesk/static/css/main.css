@@ -1964,3 +1964,18 @@ a.ui-button:active,
 .header {
 	padding: 0;
 }
+
+
+
+.chat-window pre {
+	display: inline-block;
+    color: #212529;
+    margin: 6px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background-color: #E1FFC9;
+    font-weight: 400;
+    font-size: 15px;
+    font-family: 'Plumb', sans-serif;
+    white-space: inherit;
+}
