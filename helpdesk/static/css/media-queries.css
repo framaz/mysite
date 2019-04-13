@@ -1,6 +1,9 @@
 /* Media Queries */
 
 @media screen and (min-width: 1200px) {
+	* {
+		color: red;
+	}
 
 }
 
