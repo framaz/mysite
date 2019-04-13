@@ -1,9 +1,6 @@
 /* Media Queries */
 
 @media screen and (min-width: 1200px) {
-	* {
-		color: red;
-	}
 
 }
 
@@ -23,6 +20,14 @@
         margin: 20px auto;
     }
 
+    .label-text, .message-text, .label-text_ticket, .ticket-text, .ticket-name, .label-name_ticket {
+        width: 60%;
+    }
+
+    .label-status, .message-status, .label-priority_ticket, .ticket-priority {
+        width: 40%;
+    }
+
 }
 
 /* 576 - 768 px */
@@ -32,6 +37,10 @@
 	
 /* 320 - 576 px */
 @media screen and (max-width: 576px) {
+	.container {
+        width: 100%;
+        padding: 20px 0;
+    }
 	
 }
 
