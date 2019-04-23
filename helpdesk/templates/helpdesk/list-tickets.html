@@ -64,6 +64,7 @@
 					</ul>
 				</div>
 			</div>
+			{%if not isAdmining%}
 			<div class="row">
 				<div class="col">
 					<a href="{%url 'helpdesk:new_ticket'%}" class="btn btn_new-message">
@@ -71,6 +72,7 @@
 					</a>
 				</div>
 			</div>
+			{%endif%}
 		</div>
 	</section>
 {%endblock%}

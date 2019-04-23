@@ -201,7 +201,7 @@ def view_ticket_admin(request,ticket_num):
     return render(request,'helpdesk/view-ticket_admin.html',context)
 @login_required
 def accept_ticket(request,ticket_num):
-    ticket = get_object_or_404(models.Ticket,pk=ticket_num,deleted=False,finished=False)
+    ticket = get_object_or_404(models.Ticket,pk=ticket_num,deleted=False,finished=False,worker=None)
     if models.EmployeesInDepartments.objects.filter(person = request.user,department = ticket.targeted_department).count()>0:
         ticket.worker=request.user
         ticket.save()

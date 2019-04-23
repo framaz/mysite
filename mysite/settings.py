@@ -26,7 +26,7 @@ SECRET_KEY = '^1ru#92c&+)a_ii)hqcox@fl8xu53gyuu++=5o)&!ny*vazs4-'
 DEBUG = True
 
 ALLOWED_HOSTS = ["framaz.pythonanywhere.com","127.0.0.1"]
-LOGIN_URL = 'login_view'
+LOGIN_URL = 'helpdesk:login_view'
 
 # Application definition
 
