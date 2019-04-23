@@ -12,7 +12,13 @@ from . import models
 def login_view(request):
     if request.user.is_authenticated:
         return redirect(reverse('helpdesk:list-tickets'))
-    return render(request,"helpdesk/index.html",{})
+    context={}
+    try:
+        if(request.GET['type']=='wrong_pass'):
+            context['wrong_pass']=True
+    except:
+        pass
+    return render(request,"helpdesk/index.html",context)
 def logging_in(request):
 
     username = request.POST['username']
@@ -23,7 +29,7 @@ def logging_in(request):
         return redirect(reverse('helpdesk:list-tickets'))
     else:
         # Return an 'invalid login' error message.
-        return redirect(reverse('helpdesk:login_view'))
+        return redirect(reverse('helpdesk:login_view')+"?&type=wrong_pass")
         
 class list_tickets(LoginRequiredMixin,generic.ListView):
     template_name = 'helpdesk/list-tickets.html'

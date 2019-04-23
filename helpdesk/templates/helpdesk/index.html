@@ -31,7 +31,9 @@
 								<input name="username" type="text" class="input-login" placeholder="Логин">
 								<input name="password" type="password" class="input-password" placeholder="Пароль">
 								<input value="Войти" type="submit" class="btn btn-enter">
-								
+								{%if wrong_pass == True%}
+								Неверное имя пользователя или пароль
+								{%endif%}
 								<!--
 								<a href="#" class="forgot-password" target="_blank">Забыли пароль?</a>
 								-->
