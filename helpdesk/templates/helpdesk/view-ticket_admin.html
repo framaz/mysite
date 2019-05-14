@@ -97,14 +97,12 @@
 						<br>
 						{%endfor%}
 					</div>
-					<form action="{%url 'helpdesk:send_ticket_message'%}" method="POST" class="form-chat d-flex flex-column">
+					<form action="{%url 'helpdesk:send_ticket_message'%}" method="POST" class="form-chat d-flex">
 						{% csrf_token %}
-						<textarea name="chat-message" placeholder="Сообщение" required></textarea>
+						<textarea name="chat-message" placeholder="Введите текст" required></textarea>
 						<input type="hidden" name="ticket_num" value="{{obj.pk}}">
-						<input type="hidden" name="user_type" value="admin">
-						<button type="submit" class="chat-send">
-							Отправить
-						</button>
+						<input type="hidden" name="user_type" value="user">
+						<button type="submit" class="chat-send"></button>
 					</form>
 				</div>
 			</div>
