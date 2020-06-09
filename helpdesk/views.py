@@ -259,7 +259,7 @@ def send_ticket_message(request):
 
 @login_required
 def view_ticket_admin(request, ticket_num):
-    context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False, finished=False),
+    context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False),
                "user": request.user.first_name + " " + request.user.last_name}
     get_object_or_404(models.EmployeesInDepartments, person=request.user, department=context["obj"].targeted_department)
     departments_querySet = models.EmployeesInDepartments.objects.filter(person=request.user)
