@@ -1,6 +1,0 @@
-{% for game in object_list %}
-{{game.hoster.username}} {{game.is_ended}} <a href="{% url 'ticgame:startGame' game=game.pk %}">loshara</a>
-{% endfor %}
-
-<br><br>
-<a href="{% url 'ticgame:createGame' %}">myOwnGame</a>

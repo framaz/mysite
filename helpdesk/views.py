@@ -16,7 +16,7 @@ def login_view(request):
         return redirect(reverse('helpdesk:list-tickets'))
     context = {}
     try:
-        if (request.GET['type'] == 'wrong_pass'):
+        if request.GET['type'] == 'wrong_pass':
             context['wrong_pass'] = True
     except:
         pass
@@ -35,7 +35,7 @@ def logging_in(request):
         return redirect(reverse('helpdesk:login_view') + "?&type=wrong_pass")
 
 
-class list_tickets(LoginRequiredMixin, generic.ListView):
+class ListTickets(LoginRequiredMixin, generic.ListView):
     template_name = 'helpdesk/list-tickets.html'
     login_url = 'helpdesk:login_view'
     redirect_field_name = 'redirect_to'
@@ -52,7 +52,7 @@ class list_tickets(LoginRequiredMixin, generic.ListView):
         return result_list.filter(finished=False, deleted=False).order_by('id')
 
 
-class list_completed_tickets(LoginRequiredMixin, generic.ListView):
+class ListCompletedTickets(LoginRequiredMixin, generic.ListView):
     template_name = 'helpdesk/list-tickets.html'
     login_url = 'helpdesk:login_view'
     redirect_field_name = 'redirect_to'
@@ -261,7 +261,9 @@ def send_ticket_message(request):
 def view_ticket_admin(request, ticket_num):
     context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False),
                "user": request.user.first_name + " " + request.user.last_name}
-    get_object_or_404(models.EmployeesInDepartments, person=request.user, department=context["obj"].targeted_department)
+    get_object_or_404(models.EmployeesInDepartments,
+                      person=request.user,
+                      department=context["obj"].targeted_department)
     departments_querySet = models.EmployeesInDepartments.objects.filter(person=request.user)
     context["chat"] = get_user_num(context["obj"].chat.split("\n"), request)
     try:

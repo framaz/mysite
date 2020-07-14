@@ -116,3 +116,30 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# SageMath parsed files
+*.sage.py
+
+# virtualenv
+.vscode
+
+# Spyder project settings
+
+.spyproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+.DS_Store
+*.sqlite3
+media/
+*.pyc
+*.db
+*.pid
+# django migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
