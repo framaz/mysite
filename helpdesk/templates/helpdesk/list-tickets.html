@@ -34,9 +34,11 @@
 						</li>
 						{% for object in object_list %}
 						<li class="wr-tickets">
-							<a href="view-ticket_{%if isAdmining%}admin_{%endif%}{{object.pk}}" class="d-flex">
+							<a href="{%if isAdmining%}{%url 'helpdesk:view_ticket_admin' object.pk%}
+									{%else%}{%url 'helpdesk:view_ticket' object.pk%}{% endif %}" class="d-flex">
 								<div class="ticket-name d-none d-md-block">
-									<p>{%if object.first_name == ''%}Ожидается{%else%}{{object.worker.first_name}} {{object.worker.last_name}}{%endif%}</p>
+									<p>{%if object.first_name == ''%}Ожидается{%else%}
+										{{object.worker.first_name}} {{object.worker.last_name}}{%endif%}</p>
 								</div>
 								<div class="ticket-text">
 									<p>{{object.theme}}</p>

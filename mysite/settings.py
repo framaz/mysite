@@ -31,7 +31,6 @@ LOGIN_URL = 'helpdesk:login_view'
 # Application definition
 
 INSTALLED_APPS = [
-    'ticgame.apps.TicgameConfig',
     'helpdesk.apps.HelpDeskConfig',
     'django.contrib.admin',
     'django.contrib.auth',

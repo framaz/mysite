@@ -32,23 +32,23 @@
 						<ul class="menu ttu d-flex">
 							{%if isWorker%}
 							<li class="menu__item">
-								<a href="list-tickets-admin.html" class="menu__link">
+								<a href="{%url 'helpdesk:list_tickets_admin'%}" class="menu__link">
 									Рассмотреть заявки
 								</a>
 							</li>
 							<li class="menu__item">
-								<a href="list-completed-tickets-admin.html" class="menu__link">
+								<a href="{%url 'helpdesk:list-completed-tickets'%}" class="menu__link">
 									Завершенные заявки
 								</a>
 							</li>
 							{%endif%}
 							<li class="menu__item">
-								<a href="list-tickets.html" class="menu__link">
+								<a href="{%url 'helpdesk:list-tickets'%}" class="menu__link">
 									Заявки
 								</a>
 							</li>
 							<li class="menu__item">
-								<a href="faq.html" class="menu__link">
+								<a href="{%url 'helpdesk:faq'%}" class="menu__link">
 									F.A.Q.
 								</a>
 							</li>
