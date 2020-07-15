@@ -12,6 +12,7 @@ from . import models
 
 # Create your views here.
 def login_view(request):
+    """Login into helpdesk page."""
     if request.user.is_authenticated:
         return redirect(reverse('helpdesk:list-tickets'))
     context = {}
@@ -24,6 +25,7 @@ def login_view(request):
 
 
 def logging_in(request):
+    """Login in process."""
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
@@ -36,6 +38,7 @@ def logging_in(request):
 
 
 class ListTickets(LoginRequiredMixin, generic.ListView):
+    """Get all tickets of the person."""
     template_name = 'helpdesk/list-tickets.html'
     login_url = 'helpdesk:login_view'
     redirect_field_name = 'redirect_to'
@@ -53,6 +56,7 @@ class ListTickets(LoginRequiredMixin, generic.ListView):
 
 
 class ListCompletedTickets(LoginRequiredMixin, generic.ListView):
+    """List all completed tickets of the requesting user."""
     template_name = 'helpdesk/list-tickets.html'
     login_url = 'helpdesk:login_view'
     redirect_field_name = 'redirect_to'
@@ -71,6 +75,7 @@ class ListCompletedTickets(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def new_ticket(request):
+    """New ticket creation page."""
     context = {"user": request.user.first_name + " " + request.user.last_name,
                "departments": models.Department.objects.all()}
     if models.EmployeesInDepartments.objects.filter(person=request.user).count() > 0:
@@ -80,6 +85,7 @@ def new_ticket(request):
 
 @login_required
 def send_ticket(request):
+    """Sending ticket page."""
     exp_date = request.POST['date']
     translated_date = exp_date[6:10] + "-" + exp_date[0:2] + "-" + exp_date[3:5]
     if datetime.strptime(translated_date, '%Y-%m-%d') < timezone.now().replace(tzinfo=None):
@@ -107,6 +113,7 @@ def get_user_num(lista, request):
 
 @login_required
 def view_ticket(request, ticket_num):
+    """View ticket as ticket creator."""
     context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False, finished=False),
                "user": request.user.first_name + " " + request.user.last_name}
     if models.EmployeesInDepartments.objects.filter(person=request.user).count() > 0:
@@ -126,6 +133,7 @@ def view_ticket(request, ticket_num):
 
 @login_required
 def finish_ticket(request, ticket_num):
+    """Accept ticket as ticket creator."""
     obj = models.Ticket.objects.get(pk=ticket_num)
     if request.POST["result"] == 'Засчитать':
         obj.finished = True
@@ -138,12 +146,120 @@ def finish_ticket(request, ticket_num):
 
 @login_required
 def faq(request):
+    """Show faq."""
     context = {"questions": models.QuestionsAndAnswers.objects.all(),
                "user": request.user.first_name + " " + request.user.last_name}
     if models.EmployeesInDepartments.objects.filter(person=request.user).count() > 0:
         context['isWorker'] = True
     return render(request, "helpdesk/faq.html", context)
 
+
+class ListTicketsAdmin(LoginRequiredMixin, generic.ListView):
+    """List tickets to the worker's department."""
+    template_name = 'helpdesk/list-tickets.html'
+    login_url = 'helpdesk:login_view'
+    redirect_field_name = 'redirect_to'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
+        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
+            context['isWorker'] = True
+        context['isAdmining'] = True
+        return context
+
+    def get_queryset(self):
+        departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
+        department_list = []
+        for department in departments_querySet.all():
+            department_list.append(department.department.pk)
+
+        result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=False,
+                                                   deleted=False)
+        return result_list.order_by('-pub_date')
+
+
+class ListCompletedTicketsAdmin(LoginRequiredMixin, generic.ListView):
+    """List completed tickets in worker's department."""
+    template_name = 'helpdesk/list-tickets.html'
+    login_url = 'helpdesk:login_view'
+    redirect_field_name = 'redirect_to'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
+        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
+            context['isWorker'] = True
+        context['isAdmining'] = True
+        return context
+
+    def get_queryset(self):
+        departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
+        department_list = []
+        for department in departments_querySet.all():
+            department_list.append(department.department.pk)
+
+        result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=True,
+                                                   deleted=False)
+        return result_list.order_by('-pub_date')
+
+
+@login_required
+def send_ticket_message(request):
+    """Send message to ticket chat."""
+    ticket = models.Ticket.objects.get(pk=request.POST["ticket_num"])
+    message = request.POST["chat-message"].replace("\n", " ")
+    ticket.chat += "\n" + request.user.first_name + " " + request.user.last_name + ":" + message
+    ticket.save()
+    if request.POST["user_type"] == "user":
+        return redirect('helpdesk:view_ticket', ticket_num=ticket.pk)
+    else:
+        return redirect('helpdesk:view_ticket_admin', ticket_num=ticket.pk)
+
+
+@login_required
+def view_ticket_admin(request, ticket_num):
+    """View ticket as a worker."""
+    context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False),
+               "user": request.user.first_name + " " + request.user.last_name}
+    get_object_or_404(models.EmployeesInDepartments,
+                      person=request.user,
+                      department=context["obj"].targeted_department)
+    departments_querySet = models.EmployeesInDepartments.objects.filter(person=request.user)
+    context["chat"] = get_user_num(context["obj"].chat.split("\n"), request)
+    try:
+        context["chat"].pop(0)
+    except ValueError:
+        context["chat"] = context["obj"].chat.split("\n")
+    department_list = []
+    for department in departments_querySet.all():
+        department_list.append(department.department.pk)
+    result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=False,
+                                               deleted=False)
+    result_list.order_by('-pub_date')
+    context["tickets"] = result_list
+    if models.EmployeesInDepartments.objects.filter(person=request.user).count() > 0:
+        context['isWorker'] = True
+    return render(request, 'helpdesk/view-ticket_admin.html', context)
+
+
+@login_required
+def accept_ticket(request, ticket_num):
+    """Accept ticket as a worker."""
+    ticket = get_object_or_404(models.Ticket, pk=ticket_num, deleted=False, finished=False, worker=None)
+    if models.EmployeesInDepartments.objects.filter(person=request.user,
+                                                    department=ticket.targeted_department).count() > 0:
+        ticket.worker = request.user
+        ticket.save()
+    return redirect('helpdesk:list_tickets_admin')
+
+
+def logout_view(request):
+    """Logout."""
+    logout(request)
+    return redirect('helpdesk:login_view')
+
+# Message system is deprecated, so no docstrings.
 
 @login_required
 def list_messages(request):
@@ -195,103 +311,3 @@ def send_message(request):
                                   date=timezone.now()
                                   )
     return redirect('helpdesk:list_messages')
-
-
-class list_tickets_admin(LoginRequiredMixin, generic.ListView):
-    template_name = 'helpdesk/list-tickets.html'
-    login_url = 'helpdesk:login_view'
-    redirect_field_name = 'redirect_to'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
-        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
-            context['isWorker'] = True
-        context['isAdmining'] = True
-        return context
-
-    def get_queryset(self):
-        departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
-        department_list = []
-        for department in departments_querySet.all():
-            department_list.append(department.department.pk)
-
-        result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=False,
-                                                   deleted=False)
-        return result_list.order_by('-pub_date')
-
-
-class list_completed_tickets_admin(LoginRequiredMixin, generic.ListView):
-    template_name = 'helpdesk/list-tickets.html'
-    login_url = 'helpdesk:login_view'
-    redirect_field_name = 'redirect_to'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
-        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
-            context['isWorker'] = True
-        context['isAdmining'] = True
-        return context
-
-    def get_queryset(self):
-        departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
-        department_list = []
-        for department in departments_querySet.all():
-            department_list.append(department.department.pk)
-
-        result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=True,
-                                                   deleted=False)
-        return result_list.order_by('-pub_date')
-
-
-@login_required
-def send_ticket_message(request):
-    ticket = models.Ticket.objects.get(pk=request.POST["ticket_num"])
-    message = request.POST["chat-message"].replace("\n", " ")
-    ticket.chat += "\n" + request.user.first_name + " " + request.user.last_name + ":" + message
-    ticket.save()
-    if request.POST["user_type"] == "user":
-        return redirect('helpdesk:view_ticket', ticket_num=ticket.pk)
-    else:
-        return redirect('helpdesk:view_ticket_admin', ticket_num=ticket.pk)
-
-
-@login_required
-def view_ticket_admin(request, ticket_num):
-    context = {"obj": get_object_or_404(models.Ticket, pk=ticket_num, deleted=False),
-               "user": request.user.first_name + " " + request.user.last_name}
-    get_object_or_404(models.EmployeesInDepartments,
-                      person=request.user,
-                      department=context["obj"].targeted_department)
-    departments_querySet = models.EmployeesInDepartments.objects.filter(person=request.user)
-    context["chat"] = get_user_num(context["obj"].chat.split("\n"), request)
-    try:
-        context["chat"].pop(0)
-    except ValueError:
-        context["chat"] = context["obj"].chat.split("\n")
-    department_list = []
-    for department in departments_querySet.all():
-        department_list.append(department.department.pk)
-    result_list = models.Ticket.objects.filter(targeted_department__pk__in=department_list, finished=False,
-                                               deleted=False)
-    result_list.order_by('-pub_date')
-    context["tickets"] = result_list
-    if models.EmployeesInDepartments.objects.filter(person=request.user).count() > 0:
-        context['isWorker'] = True
-    return render(request, 'helpdesk/view-ticket_admin.html', context)
-
-
-@login_required
-def accept_ticket(request, ticket_num):
-    ticket = get_object_or_404(models.Ticket, pk=ticket_num, deleted=False, finished=False, worker=None)
-    if models.EmployeesInDepartments.objects.filter(person=request.user,
-                                                    department=ticket.targeted_department).count() > 0:
-        ticket.worker = request.user
-        ticket.save()
-    return redirect('helpdesk:list_tickets_admin')
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('helpdesk:login_view')
