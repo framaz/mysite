@@ -37,8 +37,7 @@ def logging_in(request):
         return redirect(reverse('helpdesk:login_view') + "?&type=wrong_pass")
 
 
-class ListTickets(LoginRequiredMixin, generic.ListView):
-    """Get all tickets of the person."""
+class AbstractTicketListing(LoginRequiredMixin, generic.ListView):
     template_name = 'helpdesk/list-tickets.html'
     login_url = 'helpdesk:login_view'
     redirect_field_name = 'redirect_to'
@@ -49,25 +48,18 @@ class ListTickets(LoginRequiredMixin, generic.ListView):
         if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
             context['isWorker'] = True
         return context
+
+
+class ListTickets(AbstractTicketListing):
+    """Get all tickets of the person."""
 
     def get_queryset(self):
         result_list = models.Ticket.objects.filter(requestor=self.request.user)
         return result_list.filter(finished=False, deleted=False).order_by('id')
 
 
-class ListCompletedTickets(LoginRequiredMixin, generic.ListView):
+class ListCompletedTickets(AbstractTicketListing):
     """List all completed tickets of the requesting user."""
-    template_name = 'helpdesk/list-tickets.html'
-    login_url = 'helpdesk:login_view'
-    redirect_field_name = 'redirect_to'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
-        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
-            context['isWorker'] = True
-        return context
-
     def get_queryset(self):
         result_list = models.Ticket.objects.filter(requestor=self.request.user)
         return result_list.filter(finished=False, deleted=False).order_by('id')
@@ -153,21 +145,14 @@ def faq(request):
         context['isWorker'] = True
     return render(request, "helpdesk/faq.html", context)
 
-
-class ListTicketsAdmin(LoginRequiredMixin, generic.ListView):
-    """List tickets to the worker's department."""
-    template_name = 'helpdesk/list-tickets.html'
-    login_url = 'helpdesk:login_view'
-    redirect_field_name = 'redirect_to'
-
+class AbstractAdminTicketListing(AbstractTicketListing):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
-        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
-            context['isWorker'] = True
         context['isAdmining'] = True
         return context
 
+class ListTicketsAdmin(AbstractAdminTicketListing):
+    """List tickets to the worker's department."""
     def get_queryset(self):
         departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
         department_list = []
@@ -178,21 +163,8 @@ class ListTicketsAdmin(LoginRequiredMixin, generic.ListView):
                                                    deleted=False)
         return result_list.order_by('-pub_date')
 
-
-class ListCompletedTicketsAdmin(LoginRequiredMixin, generic.ListView):
+class ListCompletedTicketsAdmin(AbstractAdminTicketListing):
     """List completed tickets in worker's department."""
-    template_name = 'helpdesk/list-tickets.html'
-    login_url = 'helpdesk:login_view'
-    redirect_field_name = 'redirect_to'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.first_name + " " + self.request.user.last_name
-        if models.EmployeesInDepartments.objects.filter(person=self.request.user).count() > 0:
-            context['isWorker'] = True
-        context['isAdmining'] = True
-        return context
-
     def get_queryset(self):
         departments_querySet = models.EmployeesInDepartments.objects.filter(person=self.request.user)
         department_list = []
@@ -258,6 +230,7 @@ def logout_view(request):
     """Logout."""
     logout(request)
     return redirect('helpdesk:login_view')
+
 
 # Message system is deprecated, so no docstrings.
 
